@@ -49,19 +49,46 @@ use MailchimpMarketing\Api\VerifiedDomainsApi;
 
 class Configuration
 {
-    private static $defaultConfiguration;
+    private static Configuration $defaultConfiguration;
 
-    protected $apiKeys = [];
-    protected $apiKeyPrefixes = [];
-    protected $accessToken = '';
-    protected $username = '';
-    protected $password = '';
-    protected $host = 'https://server.api.mailchimp.com/3.0';
-    protected $userAgent = 'Swagger-Codegen/3.0.80/php';
-    protected $debug = false;
-    protected $debugFile = 'php://output';
-    protected $tempFolderPath;
-    protected $timeout = 120;
+    protected array $apiKeys = [];
+    protected array $apiKeyPrefixes = [];
+    protected string $accessToken = '';
+    protected string $username = '';
+    protected string $password = '';
+    protected string $host = 'https://server.api.mailchimp.com/3.0';
+    protected string $userAgent = 'Swagger-Codegen/3.0.80/php';
+    protected bool $debug = false;
+    protected string $debugFile = 'php://output';
+    protected string $tempFolderPath;
+    protected int $timeout = 120;
+    protected AccountExportApi $accountExport;
+    protected AccountExportsApi $accountExports;
+    protected ActivityFeedApi $activityFeed;
+    protected AuthorizedAppsApi $authorizedApps;
+    protected AutomationsApi $automations;
+    protected BatchWebhooksApi $batchWebhooks;
+    protected BatchesApi $batches;
+    protected CampaignFoldersApi $campaignFolders;
+    protected CampaignsApi $campaigns;
+    protected ConnectedSitesApi $connectedSites;
+    protected ConversationsApi $conversations;
+    protected CustomerJourneysApi $customerJourneys;
+    protected EcommerceApi $ecommerce;
+    protected FacebookAdsApi $facebookAds;
+    protected FileManagerApi $fileManager;
+    protected LandingPagesApi $landingPages;
+    protected ListsApi $lists;
+    protected PingApi $ping;
+    protected ReportingApi $reporting;
+    protected ReportsApi $reports;
+    protected RootApi $root;
+    protected SearchCampaignsApi $searchCampaigns;
+    protected SearchMembersApi $searchMembers;
+    protected SurveysApi $Surveys;
+    protected TemplateFoldersApi $templateFolders;
+    protected TemplatesApi $templates;
+    protected VerifiedDomainsApi $verifiedDomains;
 
     public function __construct()
     {
@@ -98,18 +125,16 @@ class Configuration
 
     public function setConfig($config = array())
     {
-        $apiKey = isset($config['apiKey']) ? $config['apiKey'] : '';
-        $accessToken = isset($config['accessToken']) ? $config['accessToken'] : '';
-        $server = isset($config['server']) ? $config['server'] : 'invalid-server';
+        $apiKey = $config['apiKey'] ?? '';
+        $accessToken = $config['accessToken'] ?? '';
+        $server = $config['server'] ?? 'invalid-server';
         $host = str_replace('server', $server, $this->getHost());
 
         // Basic Authentication
         if (!empty($apiKey)) {
             $this->setUsername('user');
             $this->setPassword($apiKey);
-        }
-
-        // OAuth Authentication
+        } // OAuth Authentication
         elseif (!empty($accessToken)) {
             $this->accessToken = $accessToken;
         }
@@ -263,7 +288,7 @@ class Configuration
 
     public static function toDebugReport()
     {
-        $report  = 'PHP SDK (MailchimpMarketing) Debug Report:' . PHP_EOL;
+        $report = 'PHP SDK (MailchimpMarketing) Debug Report:' . PHP_EOL;
         $report .= '    OS: ' . php_uname() . PHP_EOL;
         $report .= '    PHP Version: ' . PHP_VERSION . PHP_EOL;
         $report .= '    OpenAPI Spec Version: 3.0.80' . PHP_EOL;
